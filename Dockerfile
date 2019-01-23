@@ -16,7 +16,7 @@ FROM build AS publish
 WORKDIR /app
 RUN dotnet publish -c Release -o out
 
-FROM microsoft/dotnet:2.1-runtime AS runtime
+FROM microsoft/dotnet:2.0-runtime AS runtime
 WORKDIR /app
 COPY --from=publish /app/out ./
 ENTRYPOINT ["dotnet", "SignalRChat.dll"]
