@@ -28,7 +28,7 @@ namespace SignalRChat
 
             app.UseSignalR(routes =>
                 {
-                    routes.MapHub<MyHub>("chat");
+                    routes.MapHub<MyHub>("/chat");
                 });
             // app.Run(async (context) =>
             // {
