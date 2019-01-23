@@ -1,22 +1,19 @@
-FROM microsoft/dotnet:2.1-sdk AS build
-
+FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
 WORKDIR /app
+EXPOSE 80
 
-# copy csproj and restore as distinct layers
-COPY *.csproj .
-RUN dotnet restore
-
-# copy and build everything else
+FROM microsoft/dotnet:2.1-sdk AS build
+WORKDIR /src
+COPY ["SignalRChat/SignalRChat.csproj", "SignalRChat/"]
+RUN dotnet restore "SignalRChat/SignalRChat.csproj"
 COPY . .
-
-RUN dotnet build
-
+WORKDIR "/src/SignalRChat"
+RUN dotnet build "SignalRChat.csproj" -c Release -o /app
 
 FROM build AS publish
-WORKDIR /app
-RUN dotnet publish -c Release -o out
+RUN dotnet publish "SignalRChat.csproj" -c Release -o /app
 
-FROM microsoft/aspnetcore:2.1-runtime AS runtime
+FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/out ./
+COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "SignalRChat.dll"]
