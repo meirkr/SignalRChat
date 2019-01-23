@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.1-sdk AS build
+FROM microsoft/dotnet:2.2-sdk AS build
 
 WORKDIR /app
 
@@ -16,7 +16,7 @@ FROM build AS publish
 WORKDIR /app
 RUN dotnet publish -c Release -o out
 
-FROM microsoft/dotnet:2.1.7-runtime AS runtime
+FROM microsoft/dotnet:2.2-runtime AS runtime
 WORKDIR /app
 COPY --from=publish /app/out ./
 ENTRYPOINT ["dotnet", "SignalRChat.dll"]
