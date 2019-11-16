@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace SignalRChat
 {
@@ -19,21 +20,26 @@ namespace SignalRChat
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseSignalR(routes =>
+            app.UseRouting();
+            
+            app.UseEndpoints(routeBuilder =>
+            {
+                routeBuilder.MapHub<MyHub>("/chat");
+                routeBuilder.MapHub<RobotHub>("/robot");
+                
+                routeBuilder.MapGet("/", async context =>
                 {
-                    routes.MapHub<MyHub>("/chat");
+                    await context.Response.WriteAsync("This app used SignalR!");
                 });
-            // app.Run(async (context) =>
-            // {
-            //     await context.Response.WriteAsync("Hello World!");
-            // });
+            });
+            
         }
     }
 }
