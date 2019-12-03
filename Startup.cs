@@ -33,11 +33,6 @@ namespace SignalRChat
             {
                 routeBuilder.MapHub<MyHub>("/chat");
                 routeBuilder.MapHub<RobotHub>("/robot");
-                
-                routeBuilder.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("This app used SignalR!");
-                });
             });
             
         }
