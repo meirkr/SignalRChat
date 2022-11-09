@@ -1,7 +1,7 @@
-using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
+using SignalRSwaggerGen.Attributes;
 
+[SignalRHub]
 public class RobotHub : Hub
 {
     public override Task OnConnectedAsync()
