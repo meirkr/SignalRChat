@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/bin/Debug/netcoreapp2.0/SignalRChat.dll",
+            "program": "${workspaceFolder}/bin/Debug/net7.0/SignalRChat.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
