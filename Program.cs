@@ -45,7 +45,6 @@ app.UseEndpoints(routeBuilder =>
     });
 });
 
-app.UseWebSockets(webSocketOptions);
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
