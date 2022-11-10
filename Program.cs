@@ -11,29 +11,41 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddSignalR();
+builder.Services.AddCors(options => 
+    options.AddPolicy("CorsPolicy",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader()
+                           .AllowCredentials()
+                           .WithOrigins("http://localhost:4200");
+        }));
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-    app.UseRouting();
-    
-    app.UseEndpoints(routeBuilder =>
-    {
-        routeBuilder.MapHub<MyHub>("/chat");
-        routeBuilder.MapHub<RobotHub>("/robot");
-        
-        routeBuilder.MapGet("/", async context =>
-        {
-            await context.Response.WriteAsync("This app used SignalR!");
-        });
-    });
+app.UseRouting();
+app.UseCors("CorsPolicy");
 
+app.UseEndpoints(routeBuilder =>
+{
+    routeBuilder.MapHub<MyHub>("/chat");
+    routeBuilder.MapHub<RobotHub>("/robot");
+    
+    routeBuilder.MapGet("/", async context =>
+    {
+        await context.Response.WriteAsync("This app used SignalR!");
+    });
+});
+
+app.UseWebSockets(webSocketOptions);
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
